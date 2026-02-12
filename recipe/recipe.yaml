@@ -10,7 +10,7 @@ source:
     sha256: 53f557974936b76228892d20cb89c0227eed27c2773fc3c9e68bbb7e8eebefee
 
 build:
-  number: 0
+  number: 1
   noarch: python
   script:
     - if: unix
@@ -31,7 +31,7 @@ requirements:
 
 tests:
   - python:
-      python_version: ${{ python_min }}
+      python_version: ${{ python_min }}.*
       imports:
         - rank_bm25
       pip_check: true
