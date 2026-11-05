@@ -11,9 +11,7 @@ source:
   sha256: 53f557974936b76228892d20cb89c0227eed27c2773fc3c9e68bbb7e8eebefee
 
 build:
-  number: 1
-  # osx-64 is outside the supported Anaconda build scope.
-  skip: true  # [osx and x86_64]
+  number: 0
   script:
     # Archive builds read their version from PKG-INFO instead of git tags.
     - >-
@@ -28,7 +26,6 @@ requirements:
   run:
     - python
     - numpy
-  # The only upstream extra is unbounded pytest for development.
 
 test:
   imports:
