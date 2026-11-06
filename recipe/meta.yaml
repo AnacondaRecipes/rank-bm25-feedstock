@@ -1,0 +1,51 @@
+{% set name = "rank-bm25" %}
+{% set version = "0.2.2" %}
+
+package:
+  name: {{ name }}
+  version: {{ version }}
+
+source:
+  # The PyPI sdist omits version.py, which setup.py imports.
+  url: https://github.com/dorianbrown/rank_bm25/archive/refs/tags/{{ version }}.tar.gz
+  sha256: 53f557974936b76228892d20cb89c0227eed27c2773fc3c9e68bbb7e8eebefee
+
+build:
+  number: 0
+  script:
+    # Archive builds read their version from PKG-INFO instead of git tags.
+    - >-
+      {{ PYTHON }} -c "from pathlib import Path; Path('PKG-INFO').write_text('Version: {{ version }}\n')"
+    - {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
+
+requirements:
+  host:
+    - python
+    - pip
+    - setuptools
+  run:
+    - python
+    - numpy
+
+test:
+  imports:
+    - rank_bm25
+  requires:
+    - pip
+  commands:
+    - pip check
+    - python -c "from rank_bm25 import BM25Okapi; b = BM25Okapi([['a'], ['b'], ['c']]); assert b.get_top_n(['a'], ['a', 'b', 'c'], n=1) == ['a']"
+
+about:
+  home: https://github.com/dorianbrown/rank_bm25
+  summary: Various BM25 algorithms for document ranking
+  description: A collection of BM25 algorithms for ranking documents against a query.
+  license: Apache-2.0
+  license_family: Apache
+  license_file: LICENSE
+  doc_url: https://github.com/dorianbrown/rank_bm25/blob/master/README.md
+  dev_url: https://github.com/dorianbrown/rank_bm25
+
+extra:
+  recipe-maintainers:
+    - moritzwilksch
